@@ -155,8 +155,5 @@ def toy():
 
 
 if __name__ == '__main__':
-    # reuters_corpus = read_corpus()
-
-    # compute_co_occurrence_matrix(reuters_corpus, window_size=4)
 
     toy()
