@@ -124,9 +124,12 @@ def plot_embeddings(M_reduced, word2Ind, words):
     #         M_reduced (numpy matrix of shape (number of unique words in the corpus , k)): matrix of k-dimensioal word embeddings
     #         word2Ind (dict): dictionary that maps word to indices for matrix M
     #         words (list of strings): words whose embeddings we want to visualize
-    
-    x = M_reduced[:, 0]
-    y = M_reduced[:, 1]
+
+    x, y = [], []
+    for w in words:
+        index = word2Ind[w]
+        x.append(M_reduced[index][0])
+        y.append(M_reduced[index][1])
 
     plt.plot(x, y, 'x', color='r')
 
@@ -137,21 +140,19 @@ def plot_embeddings(M_reduced, word2Ind, words):
 
 
 def toy():
-    # ---------------------
-    # Run this sanity check
-    # Note that this not an exhaustive check for correctness.
-    # The plot produced should look like the "test solution plot" depicted below. 
-    # ---------------------
+    # -----------------------------
+    # Run This Cell to Produce Your Plot
+    # ------------------------------
+    reuters_corpus = read_corpus()
+    M_co_occurrence, word2Ind_co_occurrence = compute_co_occurrence_matrix(reuters_corpus)
+    M_reduced_co_occurrence = reduce_to_k_dim(M_co_occurrence, k=2)
 
-    print ("-" * 80)
-    print ("Outputted Plot:")
+    # Rescale (normalize) the rows to make them each of unit-length
+    M_lengths = np.linalg.norm(M_reduced_co_occurrence, axis=1)
+    M_normalized = M_reduced_co_occurrence / M_lengths[:, np.newaxis] # broadcasting
 
-    M_reduced_plot_test = np.array([[1, 1], [-1, -1], [1, -1], [-1, 1], [0, 0]])
-    word2Ind_plot_test = {'test1': 0, 'test2': 1, 'test3': 2, 'test4': 3, 'test5': 4}
-    words = ['test1', 'test2', 'test3', 'test4', 'test5']
-    plot_embeddings(M_reduced_plot_test, word2Ind_plot_test, words)
-
-    print ("-" * 80)
+    words = ['barrels', 'bpd', 'ecuador', 'energy', 'industry', 'kuwait', 'oil', 'output', 'petroleum', 'venezuela']
+    plot_embeddings(M_normalized, word2Ind_co_occurrence, words)
 
 
 if __name__ == '__main__':
