@@ -131,6 +131,27 @@ def toy():
     words = ['barrels', 'bpd', 'ecuador', 'energy', 'industry', 'kuwait', 'oil', 'output', 'petroleum', 'venezuela']
     plot_embeddings(M_reduced, word2Ind, words)
 
+    similar_word = 'leaves'
+    top_similar = wv_from_bin.most_similar(similar_word)
+    for w, s in top_similar:
+        print("'{}: {:8f}".format(w, s))
+
+    w1 = "happy"
+    w2 = "cheerful"
+    w3 = "sad"
+    w1_w2_dist = wv_from_bin.distance(w1, w2)
+    w1_w3_dist = wv_from_bin.distance(w1, w3)
+
+    print("Synonyms {}, {} have cosine distance: {}".format(w1, w2, w1_w2_dist))
+    print("Antonyms {}, {} have cosine distance: {}".format(w1, w3, w1_w3_dist))
+
+    pprint.pprint(wv_from_bin.most_similar(positive=['China', 'Beijing'], negative=['Canada']))
+    print()
+
+    pprint.pprint(wv_from_bin.most_similar(positive=['woman', 'boss'], negative=['man']))
+    print()
+    pprint.pprint(wv_from_bin.most_similar(positive=['man', 'boss'], negative=['woman']))
+
 
 if __name__ == '__main__':
     toy()
